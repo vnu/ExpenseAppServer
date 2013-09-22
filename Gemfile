@@ -34,6 +34,7 @@ gem "haml-rails", "~> 0.4"
 gem "sass", "~> 3.2.10"
 gem "sass-rails", "~> 4.0.0"
 gem "rabl", "~> 0.8.6"
+gem "bootstrap-sass", "~> 2.3.2.2"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
