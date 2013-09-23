@@ -1,0 +1,2 @@
+module SharedTransactionsHelper
+end

@@ -1,0 +1,2 @@
+class SharedTransactionsController < ApplicationController
+end

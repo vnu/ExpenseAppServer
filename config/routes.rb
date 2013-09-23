@@ -11,6 +11,15 @@ ExpenseAppServer::Application.routes.draw do
   get 'auth/failure', to: redirect('/')
   get 'signout', to: 'sessions#destroy', as: 'signout'
 
+  resources :accounts
+  resources :categories
+  resources :sub_categories
+  resources :payment_modes
+  resources :shared_transactions
+  resources :transactions
+  resources :vendors
+  resources :users
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
