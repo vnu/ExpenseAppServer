@@ -42,6 +42,14 @@ ExpenseAppServer::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
+  
+  ######## MORE LOGGING INFO #####
+  STDOUT.sync = true
+  logger = Logger.new(STDOUT)
+  logger.level = 1 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
+  # NOTE:   with 0 you're going to get all DB calls, etc.
+  Rails.logger = config.logger = logger
+
   # Set to :debug to see everything in the log.
   config.log_level = :info
 
