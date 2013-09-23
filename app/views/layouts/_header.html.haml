@@ -1,2 +1,7 @@
 .header
   %a{href: root_url}AndroExpense
+  - if current_user
+    %h2{style: "color: orange;"}="Welcome #{current_user.name}!"
+    %a{href: signout_url}Sign Out 
+  -else
+    %a{href: "/auth/twitter"}Sign in with Twitter

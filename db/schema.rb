@@ -78,8 +78,7 @@ ActiveRecord::Schema.define(version: 20130922200657) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name",         null: false
+    t.string   "name",              null: false
     t.string   "email",             null: false
     t.string   "twitter_user_name", null: false
     t.string   "twitter_uid",       null: false

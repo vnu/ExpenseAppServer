@@ -1,0 +1,4 @@
+#File for ENV and some keys
+
+TWITTER_KEY = ENV['TWITTER_KEY'] || "oUHs6yS5NNxLx9ZeRum3w"
+TWITTER_SECRET = ENV['TWITTER_SECRET'] || "sry3Sg0hmKgfyOlHlPDwNCJT2p2Evm7VsoFsTEpxok"
