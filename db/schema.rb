@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20130922200657) do
     t.integer  "account_id",                                   null: false
     t.integer  "category_id",                                  null: false
     t.integer  "sub_category_id"
-    t.integer  "mode_id",                                      null: false
+    t.integer  "payment_mode_id",                              null: false
     t.text     "notes"
     t.integer  "transaction_type_id",                          null: false
     t.decimal  "amount",              precision: 10, scale: 2

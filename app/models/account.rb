@@ -11,6 +11,6 @@
 #
 
 class Account < ActiveRecord::Base
-  has_one :user
+  belongs_to :user
   validates_uniqueness_of :display_name, :scope => [:user_id]
 end

@@ -1,0 +1,7 @@
+%h4{style: "text-align: center; color: purple;"}= "Accounts for #{current_user.name}"
+-@accounts.each do |acc|
+  .row
+    .span3.offset4
+      %h2= acc.display_name
+    .span3.offset2
+      %h2= acc.balance

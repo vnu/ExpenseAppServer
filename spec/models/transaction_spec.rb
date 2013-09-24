@@ -7,7 +7,7 @@
 #  account_id          :integer          not null
 #  category_id         :integer          not null
 #  sub_category_id     :integer
-#  mode_id             :integer          not null
+#  payment_mode_id     :integer          not null
 #  notes               :text
 #  transaction_type_id :integer          not null
 #  amount              :decimal(10, 2)

@@ -1,7 +1,12 @@
-.header
-  %a{href: root_url}AndroExpense
-  - if current_user
-    %h2{style: "color: orange;"}="Welcome #{current_user.name}!"
-    %a{href: signout_url}Sign Out 
-  -else
-    %a{href: "/auth/twitter"}Sign in with Twitter
+%header.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    .container
+      = link_to "AndroExpense", '#', id: "logo"
+      %nav
+        %ul.nav.pull-right
+          %li= link_to "Home",    '#'
+          %li= link_to "Accounts",  new_account_path
+          -if current_user
+            %li= link_to "Sign Out #{current_user.name}!", signout_url
+          -else
+            %li= link_to "Sign in", '/auth/twitter'

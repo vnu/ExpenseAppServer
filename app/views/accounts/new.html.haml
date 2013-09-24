@@ -1,0 +1,12 @@
+.container
+  .row{style: "align: center;"}
+    %form{method: :post, action: accounts_path}
+      %fieldset
+        %legend New Accounts
+        %label Name
+        %input{placeholder: "Account Name", type: "text", name: "account_name"}/
+        %label Balance
+        %input{placeholder: "Initial Balance", type: "text", name: "account_balance"}/
+      %button.btn{type: "submit"} Add Account
+      %br
+      %h5= link_to "Show All my Accounts", accounts_path
