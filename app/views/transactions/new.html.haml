@@ -1,0 +1,28 @@
+.container
+  .row{style: "align: center;"}
+    %form{method: :post, action: transactions_path}
+      %fieldset
+        %legend New Transaction
+        %label Transaction Type
+        %input{placeholder: "Income, Expense or Shared", type: "text", name: "trans_type"}/
+        %label Amount
+        %input{placeholder: "Enter Amount", type: "text", name: "amount"}/
+        %label Vendor
+        %input{placeholder: "Vendor Name", type: "text", name: "vendor"}/
+        %label Account
+        %input{placeholder: "Enter Account Name", type: "text", name: "account"}/
+        %label Date
+        %input{placeholder: "Enter Transaction Date", type: "text", name: "trans_date"}/
+        %label Category
+        %input{placeholder: "Category Name", type: "text", name: "category"}/
+        %label Sub Category
+        %input{placeholder: "Sub Category Name", type: "text", name: "sub_category"}/
+        %label Payment Mode
+        %input{placeholder: "Payment Mode", type: "text", name: "payment_mode"}/
+        %label Notes
+        %input{placeholder: "Notes", type: "text", name: "notes"}/
+        %label Shared Emails
+        %input{placeholder: "Enter , separated emails", type: "text", name: "emails"}/
+      %button.btn{type: "submit"} Add Transaction
+      %br
+      %h5= link_to "Show All my Transaction", transactions_path

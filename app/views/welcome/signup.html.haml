@@ -1,0 +1,10 @@
+.container
+  .row{style: "align: center;"}
+    %form{method: :post, action: complete_signup_path}
+      %fieldset
+        %legend Signup
+        %label Name
+        %input{placeholder: "Your Name", type: "text", name: "name", value: current_user.name}/
+        %label Email
+        %input{placeholder: "Enter Email", type: "text", name: "email"}/
+      %button.btn{type: "submit"} Signup

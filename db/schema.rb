@@ -66,10 +66,11 @@ ActiveRecord::Schema.define(version: 20130922200657) do
   create_table "transactions", force: true do |t|
     t.integer  "vendor_id",                                    null: false
     t.integer  "account_id",                                   null: false
-    t.integer  "category_id",                                  null: false
+    t.integer  "category_id"
     t.integer  "sub_category_id"
-    t.integer  "payment_mode_id",                              null: false
+    t.integer  "payment_mode_id"
     t.text     "notes"
+    t.datetime "transaction_date"
     t.integer  "transaction_type_id",                          null: false
     t.decimal  "amount",              precision: 10, scale: 2
     t.integer  "user_id",                                      null: false
@@ -79,7 +80,7 @@ ActiveRecord::Schema.define(version: 20130922200657) do
 
   create_table "users", force: true do |t|
     t.string   "name",              null: false
-    t.string   "email",             null: false
+    t.string   "email"
     t.string   "twitter_user_name", null: false
     t.string   "twitter_uid",       null: false
     t.datetime "created_at"

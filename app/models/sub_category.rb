@@ -11,4 +11,8 @@
 #
 
 class SubCategory < ActiveRecord::Base
+  has_many :transactions
+  belongs_to :user
+  belongs_to :category
+  validates_uniqueness_of :display_name, :scope => [:user_id, :category_id]
 end

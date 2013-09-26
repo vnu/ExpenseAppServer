@@ -12,5 +12,6 @@
 
 class Account < ActiveRecord::Base
   belongs_to :user
+  has_many :transactions
   validates_uniqueness_of :display_name, :scope => [:user_id]
 end

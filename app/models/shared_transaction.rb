@@ -14,4 +14,6 @@
 #
 
 class SharedTransaction < ActiveRecord::Base
+  belongs_to :transaction
+  belongs_to :vendor
 end

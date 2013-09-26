@@ -10,4 +10,8 @@
 #
 
 class Vendor < ActiveRecord::Base
+  has_many :transactions
+  has_many :shared_transactions
+  belongs_to :user
+  validates_uniqueness_of :display_name, :scope => [:user_id]
 end

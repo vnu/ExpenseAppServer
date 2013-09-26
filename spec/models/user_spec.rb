@@ -4,7 +4,7 @@
 #
 #  id                :integer          not null, primary key
 #  name              :string(255)      not null
-#  email             :string(255)      not null
+#  email             :string(255)
 #  twitter_user_name :string(255)      not null
 #  twitter_uid       :string(255)      not null
 #  created_at        :datetime

@@ -5,6 +5,8 @@ ExpenseAppServer::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
+  get  'welcome/signup', as: 'signup'
+  post 'welcome/complete_signup' ,as: 'complete_signup'
 
   # SESSIONS
   get 'auth/:provider/callback', to: 'sessions#create'

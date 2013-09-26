@@ -4,9 +4,12 @@
       = link_to "AndroExpense", '#', id: "logo"
       %nav
         %ul.nav.pull-right
-          %li= link_to "Home",    '#'
-          %li= link_to "Accounts",  new_account_path
+          %li= link_to "Home", '#'
           -if current_user
+            %li= link_to "Accounts",  new_account_path
+            %li= link_to "Transactions", new_transaction_path
             %li= link_to "Sign Out #{current_user.name}!", signout_url
           -else
             %li= link_to "Sign in", '/auth/twitter'
+- flash.each do |name, msg|
+  %h4.flash= content_tag :div, msg, class: name

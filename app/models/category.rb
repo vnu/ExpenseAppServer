@@ -10,4 +10,8 @@
 #
 
 class Category < ActiveRecord::Base
+  has_many :transactions
+  has_many :sub_categories
+  validates_uniqueness_of :display_name, :scope => [:user_id]
+  belongs_to :user
 end
