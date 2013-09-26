@@ -1,0 +1,17 @@
+%h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
+-ts = Transaction.to_jsonFormat(@transactions)
+.row
+  .span3.offset7
+    %h2{style: "color: orange;"} Column
+  .span3
+    %h2{style: "color: orange;"} Value
+
+-ts.each do |t|
+  -t.each_pair do |k,v|
+    .row
+      .span3.offset7
+        %h2= k
+      .span3
+        %h2= v
+  %hr
+

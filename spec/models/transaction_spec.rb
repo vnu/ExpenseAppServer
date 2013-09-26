@@ -5,9 +5,6 @@
 #  id                  :integer          not null, primary key
 #  vendor_id           :integer          not null
 #  account_id          :integer          not null
-#  category_id         :integer
-#  sub_category_id     :integer
-#  payment_mode_id     :integer
 #  notes               :text
 #  transaction_date    :datetime
 #  transaction_type_id :integer          not null

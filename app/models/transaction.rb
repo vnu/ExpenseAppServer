@@ -5,9 +5,6 @@
 #  id                  :integer          not null, primary key
 #  vendor_id           :integer          not null
 #  account_id          :integer          not null
-#  category_id         :integer
-#  sub_category_id     :integer
-#  payment_mode_id     :integer
 #  notes               :text
 #  transaction_date    :datetime
 #  transaction_type_id :integer          not null
@@ -20,9 +17,6 @@
 class Transaction < ActiveRecord::Base
   belongs_to :vendor
   belongs_to :account
-  belongs_to :category
-  belongs_to :sub_category
-  belongs_to :payment_mode
   belongs_to :user
   belongs_to :transaction_type
   has_many :shared_transactions
@@ -35,11 +29,6 @@ class Transaction < ActiveRecord::Base
     if account.present?
       t.account = account
       t.transaction_date = params[:trans_date].to_date
-      t.category = t.find_or_create_category(params[:category], user_id)
-      if t.category.present?
-        t.sub_category = t.find_or_create_subcategory(params[:sub_category],t.category, user_id)
-      end
-      t.payment_mode = t.find_or_create_payment_mode(params[:payment_mode], user_id)
       t.notes = params[:notes]
       t.transaction_type = t.find_transaction_type(params[:trans_type])
       t.user_id = user_id
@@ -79,21 +68,6 @@ class Transaction < ActiveRecord::Base
       user_id: user_id)
   end
 
-  def find_or_create_category(category, user_id)
-    Category.find_or_create_by(display_name: category.titleize, 
-      user_id: user_id)
-  end
-
-  def find_or_create_subcategory(subcategory, category, user_id)
-    SubCategory.find_or_create_by(display_name: subcategory.titleize, 
-      user_id: user_id, category: category)
-  end
-
-  def find_or_create_payment_mode(mode, user_id)
-    PaymentMode.find_or_create_by(display_name: mode.titleize, 
-      user_id: user_id)
-  end
-
   def self.find_users(emails)
     users = []
     emails.split(",").each do |email|
@@ -111,9 +85,6 @@ class Transaction < ActiveRecord::Base
         amount: t.amount,
         vendor: t.vendor.display_name,
         account: t.account.display_name,
-        category: t.category.display_name,
-        sub_category: t.sub_category.display_name,
-        payment_mode: t.payment_mode.display_name,
         user: t.user.twitter_user_name
       }
       new_trans << json_t

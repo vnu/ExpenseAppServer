@@ -14,9 +14,6 @@ ExpenseAppServer::Application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
 
   resources :accounts
-  resources :categories
-  resources :sub_categories
-  resources :payment_modes
   resources :shared_transactions
   resources :transactions
   resources :vendors

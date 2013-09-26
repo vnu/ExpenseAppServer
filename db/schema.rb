@@ -24,20 +24,6 @@ ActiveRecord::Schema.define(version: 20130922200657) do
     t.datetime "updated_at"
   end
 
-  create_table "categories", force: true do |t|
-    t.string   "display_name", null: false
-    t.integer  "user_id",      null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "payment_modes", force: true do |t|
-    t.string   "display_name", null: false
-    t.integer  "user_id",      null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "shared_transactions", force: true do |t|
     t.integer  "vendor_id",                                               null: false
     t.integer  "transaction_id",                                          null: false
@@ -45,14 +31,6 @@ ActiveRecord::Schema.define(version: 20130922200657) do
     t.boolean  "owner",                                   default: false
     t.decimal  "amount",         precision: 10, scale: 2
     t.integer  "user_id",                                                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "sub_categories", force: true do |t|
-    t.string   "display_name", null: false
-    t.integer  "category_id",  null: false
-    t.integer  "user_id",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -66,9 +44,6 @@ ActiveRecord::Schema.define(version: 20130922200657) do
   create_table "transactions", force: true do |t|
     t.integer  "vendor_id",                                    null: false
     t.integer  "account_id",                                   null: false
-    t.integer  "category_id"
-    t.integer  "sub_category_id"
-    t.integer  "payment_mode_id"
     t.text     "notes"
     t.datetime "transaction_date"
     t.integer  "transaction_type_id",                          null: false
