@@ -1,8 +1,8 @@
-%h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
 .container
   .row.offset9{style: "text-align: right;"}
     %h4
       =link_to "New Transaction", new_transaction_path
+  %h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
   .row
     .span12
       %table.table.table-bordered.table-striped
