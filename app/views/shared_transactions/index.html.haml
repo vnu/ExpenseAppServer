@@ -1,15 +1,15 @@
-%h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
+%h4{style: "text-align: center; color: purple;"}= "Shared Bill of #{current_user.name}"
 .container
   .row.offset9{style: "text-align: right;"}
     %h4
-      =link_to "New Transaction", new_transaction_path
+      =link_to "New Shared Bill", new_transaction_path
   .row
     .span12
       %table.table.table-bordered.table-striped
         %tr
-          -Transaction::COLUMNS.each do |col|
+          -SharedTransaction::COLUMNS.each do |col|
             %th{style: "color: orange; text-align: center;"}= col.titleize
         -@jsonTransactions.each do |ts|
-          %tr
-            -Transaction::COLUMNS.each do |col|
+          %tr.danger
+            -SharedTransaction::COLUMNS.each do |col|
               %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]

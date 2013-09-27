@@ -16,7 +16,8 @@ class User < ActiveRecord::Base
   has_many :vendors
   has_many :accounts
   has_many :transactions
-  has_many :shared_transactions
+  has_many :shared_transactions, foreign_key: 'user_id', class_name: "SharedTransaction"
+  has_many :owned_transactions, foreign_key: 'owner_id', class_name: "SharedTransaction"
   validates_presence_of :twitter_uid, :twitter_user_name, :name
   validates_uniqueness_of :email
 

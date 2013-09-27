@@ -1,7 +1,19 @@
 class TransactionsController < ApplicationController
-  before_filter :require_authentication
-  before_filter :require_email
+  before_filter :require_authentication, unless: :format_json
+  before_filter :require_email, unless: :format_json
 
+  def index
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id
+      @transactions = Transaction.where(user_id: user_id)
+      @jsonTransactions = Transaction.to_jsonFormat(@transactions)
+    end
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @jsonTransactions || "Sorry" }
+    end
+  end
+  
   def new
   end
 
@@ -13,18 +25,15 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def index
-    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
-    if user_id
-      @transactions = Transaction.where(user_id: user_id)
-      respond_to do |format|
-        format.html {}
-        format.json {render json: Transaction.to_jsonFormat(@transactions)}
-      end
-    end
+  def show
   end
 
-  def show
-    
+  def edit
+  end
+
+  def update
+  end
+
+  def destroy
   end
 end

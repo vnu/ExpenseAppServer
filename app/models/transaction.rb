@@ -20,6 +20,9 @@ class Transaction < ActiveRecord::Base
   belongs_to :user
   belongs_to :transaction_type
   has_many :shared_transactions
+  after_save :update_account
+
+  COLUMNS = ["id", "type", "vendor", "account", "amount", "user"]
 
   def self.create_new_transaction(params, user_id)
     t = Transaction.new
@@ -36,14 +39,16 @@ class Transaction < ActiveRecord::Base
       emails = params[:emails]
       if emails.present? && params[:trans_type].titleize == "Shared"
         users = find_users(emails)
+        users << user_id
         cnt = users.count
         users.each do |u|
           SharedTransaction.create! do |s|
             u_vendor = t.find_or_create_vendor(t.vendor.display_name, u)
             s.vendor = u_vendor
             s.transaction = t
+            s.transaction_date = t.transaction_date
             s.notes = t.notes
-            s.owner = true if u == user_id
+            s.owner_id = user_id
             s.amount = t.amount/cnt.to_f
             s.user_id = u
           end
@@ -53,6 +58,23 @@ class Transaction < ActiveRecord::Base
       t = nil
     end
     t
+  end
+
+  # Add creation of Shared accounts to after save!
+  def create_shared_accounts
+
+  end
+
+  def update_account
+    account = self.account
+    type = self.transaction_type.display_name
+
+    if type == "Income"
+      account.balance = account.balance + self.amount
+    else
+      account.balance = account.balance - self.amount
+    end
+    account.save! if account.changed?
   end
 
   def find_transaction_type(type)

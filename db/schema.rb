@@ -25,12 +25,14 @@ ActiveRecord::Schema.define(version: 20130922200657) do
   end
 
   create_table "shared_transactions", force: true do |t|
-    t.integer  "vendor_id",                                               null: false
-    t.integer  "transaction_id",                                          null: false
+    t.integer  "vendor_id",                                                  null: false
+    t.integer  "transaction_id",                                             null: false
     t.text     "notes"
-    t.boolean  "owner",                                   default: false
-    t.decimal  "amount",         precision: 10, scale: 2
-    t.integer  "user_id",                                                 null: false
+    t.integer  "owner_id",                                                   null: false
+    t.datetime "transaction_date"
+    t.decimal  "amount",           precision: 10, scale: 2
+    t.integer  "user_id",                                                    null: false
+    t.string   "status",                                    default: "open"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
