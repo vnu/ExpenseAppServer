@@ -21,7 +21,7 @@ class SharedTransaction < ActiveRecord::Base
   belongs_to :user
   belongs_to :owner, class_name: "User", foreign_key: 'owner_id'
 
-  COLUMNS = ["id", "transaction_id", "amount", "vendor", "owes", "status"]
+  COLUMNS = ["id", "transaction_id", "amount", "vendor", "payee","payer","owes", "status"]
 
   def self.to_jsonFormat(transactions, user_id)
     new_trans = []
@@ -31,22 +31,25 @@ class SharedTransaction < ActiveRecord::Base
         owes = nil
         exp = nil
         if t.owner_id != user_id
-          owes = "you owe #{t.user.name}"
+          payer = t.user.name.titleize
+          payee = "You"
           exp = true
-          # owes = "you"
-          # owe = t.user.name
+          
         else
           exp = false
+          payer = "You"
+          payee = t.user.name.titleize
           owes = "#{t.user.name} owes you"
-          # owes = t.user.name
-          # owe = "you"
+          
         end
+        owes = "#{payee} owe #{payer}"
         json_t = {
             id: t.id,
             transaction_id: t.transaction_id,
             amount: t.amount,
             vendor: t.vendor.display_name,
-            # owe: owe,
+            payer: payer,
+            payee: payee,
             owes: owes,
             status: t.status,
             type: exp

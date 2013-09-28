@@ -10,6 +10,6 @@
           -SharedTransaction::COLUMNS.each do |col|
             %th{style: "color: orange; text-align: center;"}= col.titleize
         -@jsonTransactions.each do |ts|
-          %tr.danger
+          %tr{class: "#{ts[:payer] == 'You' ? 'success' : 'error'}"}
             -SharedTransaction::COLUMNS.each do |col|
               %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]
