@@ -10,6 +10,10 @@
           -Transaction::COLUMNS.each do |col|
             %th{style: "color: orange; text-align: center;"}= col.titleize
         -@jsonTransactions.each do |ts|
-          %tr
+          -if ts[:type] == "Income"
+            -t_class = "success"
+          -else
+            -t_class = ts[:type] == "Expense" ? 'error' : 'warning'
+          %tr{class: "#{t_class}"}
             -Transaction::COLUMNS.each do |col|
               %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]

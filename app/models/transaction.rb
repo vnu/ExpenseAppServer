@@ -19,43 +19,47 @@ class Transaction < ActiveRecord::Base
   belongs_to :account
   belongs_to :user
   belongs_to :transaction_type
-  has_many :shared_transactions
+  has_many :shared_transactions, autosave: true
+  accepts_nested_attributes_for :shared_transactions
+  validates_associated :shared_transactions
   after_save :update_account
 
   COLUMNS = ["id", "type", "vendor", "account", "amount", "user"]
 
   def self.create_new_transaction(params, user_id)
-    t = Transaction.new
-    t.amount = params[:amount].to_f
-    t.vendor = t.find_or_create_vendor(params[:vendor], user_id)
-    account = t.find_account(params[:account], user_id)
-    if account.present?
-      t.account = account
-      t.transaction_date = params[:trans_date].to_date
-      t.notes = params[:notes]
-      t.transaction_type = t.find_transaction_type(params[:trans_type])
-      t.user_id = user_id
-      t.save!
-      emails = params[:emails]
-      if emails.present? && params[:trans_type].titleize == "Shared"
-        users = find_users(emails)
-        users << user_id
-        cnt = users.count
-        users.each do |u|
-          SharedTransaction.create! do |s|
-            u_vendor = t.find_or_create_vendor(t.vendor.display_name, u)
-            s.vendor = u_vendor
-            s.transaction = t
-            s.transaction_date = t.transaction_date
-            s.notes = t.notes
-            s.owner_id = user_id
-            s.amount = t.amount/cnt.to_f
-            s.user_id = u
+    t = "Unsuccessful"
+      Transaction.transaction do
+      t = Transaction.new
+      t.amount = params[:amount].to_f
+      t.vendor = t.find_or_create_vendor(params[:vendor], user_id)
+      account = t.find_account(params[:account], user_id)
+      if account.present?
+        t.account = account
+        t.transaction_date = params[:trans_date].to_date
+        t.notes = params[:notes]
+        t.transaction_type = t.find_transaction_type(params[:trans_type])
+        t.user_id = user_id
+        emails = params[:emails]
+        if emails.present? && params[:trans_type].titleize == "Shared"
+          users = find_users(emails)
+          users << user_id
+          cnt = users.count
+          users.each do |u|
+            t.shared_transactions.new do |s|
+              u_vendor = t.find_or_create_vendor(t.vendor.display_name, u)
+              s.vendor = u_vendor
+              s.transaction_date = t.transaction_date
+              s.notes = t.notes
+              s.owner_id = user_id
+              s.amount = t.amount/cnt.to_f
+              s.user_id = u
+            end
           end
+          t.save!
         end
+      else
+        t = "Your Account doesn't exist. Please Create your Account!"
       end
-    else
-      t = nil
     end
     t
   end
