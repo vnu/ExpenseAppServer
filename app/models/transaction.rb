@@ -39,7 +39,8 @@ class Transaction < ActiveRecord::Base
         t.transaction_type = t.find_transaction_type(params[:trans_type])
         t.user_id = user_id
         emails = params[:emails]
-        if emails.present? && params[:trans_type].titleize == "Shared"
+        t_type = params[:trans_type].titleize
+        if emails.present? && (t_type == "Shared" || t_type == "Expense")
           users = find_users(emails)
           users << user_id
           t = create_shared_accounts(users, t, user_id)
