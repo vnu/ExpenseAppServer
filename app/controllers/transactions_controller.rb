@@ -7,10 +7,11 @@ class TransactionsController < ApplicationController
     if user_id
       @transactions = Transaction.where(user_id: user_id)
       @jsonTransactions = Transaction.to_jsonFormat(@transactions)
+      @jsonArr = {"transactions" => @jsonTransactions}
     end
     respond_to do |format|
       format.html {}
-      format.json {render json: @jsonTransactions || "Sorry" }
+      format.json {render json: @jsonArr || "Sorry" }
     end
   end
   

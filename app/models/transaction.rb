@@ -35,7 +35,7 @@ class Transaction < ActiveRecord::Base
       account = t.find_account(params[:account], user_id)
       if account.present?
         t.account = account
-        t.transaction_date = params[:trans_date].to_date
+        t.transaction_date = params[:trans_date].to_date || Date.today
         t.notes = params[:notes]
         t.transaction_type = t.find_transaction_type(params[:trans_type])
         t.user_id = user_id
@@ -43,18 +43,7 @@ class Transaction < ActiveRecord::Base
         if emails.present? && params[:trans_type].titleize == "Shared"
           users = find_users(emails)
           users << user_id
-          cnt = users.count
-          users.each do |u|
-            t.shared_transactions.new do |s|
-              u_vendor = t.find_or_create_vendor(t.vendor.display_name, u)
-              s.vendor = u_vendor
-              s.transaction_date = t.transaction_date
-              s.notes = t.notes
-              s.owner_id = user_id
-              s.amount = t.amount/cnt.to_f
-              s.user_id = u
-            end
-          end
+          t = create_shared_accounts(users, t)
           t.save!
         end
       else
@@ -65,8 +54,20 @@ class Transaction < ActiveRecord::Base
   end
 
   # Add creation of Shared accounts to after save!
-  def create_shared_accounts
-
+  def create_shared_accounts(users, t)
+    cnt = users.count
+    users.each do |u|
+      t.shared_transactions.new do |s|
+        u_vendor = t.find_or_create_vendor(t.vendor.display_name, u)
+        s.vendor = u_vendor
+        s.transaction_date = t.transaction_date
+        s.notes = t.notes
+        s.owner_id = user_id
+        s.amount = t.amount/cnt.to_f
+        s.user_id = u
+      end
+    end
+    t
   end
 
   def update_account
@@ -111,7 +112,9 @@ class Transaction < ActiveRecord::Base
         amount: t.amount,
         vendor: t.vendor.display_name,
         account: t.account.display_name,
-        user: t.user.twitter_user_name
+        user: t.user.twitter_user_name,
+        notes: t.notes,
+        trans_date: t.transaction_date
       }
       new_trans << json_t
     end
