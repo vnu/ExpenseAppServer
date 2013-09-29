@@ -42,7 +42,7 @@ class Transaction < ActiveRecord::Base
         if emails.present? && params[:trans_type].titleize == "Shared"
           users = find_users(emails)
           users << user_id
-          t = create_shared_accounts(users, t)
+          t = create_shared_accounts(users, t, user_id)
         end
         t.save!
       else
@@ -53,7 +53,7 @@ class Transaction < ActiveRecord::Base
   end
 
   # Add creation of Shared accounts to after save!
-  def self.create_shared_accounts(users, t)
+  def self.create_shared_accounts(users, t, user_id)
     cnt = users.count
     users.each do |u|
       t.shared_transactions.new do |s|
