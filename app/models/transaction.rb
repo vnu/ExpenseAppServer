@@ -21,7 +21,6 @@ class Transaction < ActiveRecord::Base
   belongs_to :transaction_type
   has_many :shared_transactions, autosave: true
   accepts_nested_attributes_for :shared_transactions
-  validates_associated :shared_transactions
   after_save :update_account
 
   COLUMNS = ["id", "type", "vendor", "account", "amount", "user"]
@@ -44,8 +43,8 @@ class Transaction < ActiveRecord::Base
           users = find_users(emails)
           users << user_id
           t = create_shared_accounts(users, t)
-          t.save!
         end
+        t.save!
       else
         t = "Your Account doesn't exist. Please Create your Account!"
       end
