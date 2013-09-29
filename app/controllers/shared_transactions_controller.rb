@@ -53,6 +53,46 @@ class SharedTransactionsController < ApplicationController
       format.json {render json: @jsonArr || "Sorry" }
     end
   end
+
+  def pay_bill
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id.present?
+      id = params[:st_id]
+      st = SharedTransaction.find_by(id: id)
+      st.update_attributes(status: "progress") if st
+    end
+    respond_to do |format|
+      format.html {redirect_to shared_transactions_path}
+      format.json {render json: @jsonArr || "Sorry" }
+    end
+  end
+
+  def confirm_payment
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id.present?
+      if user_id.present?
+        id = params[:st_id]
+        account = params[:account]
+        st = SharedTransaction.find_by(id: id)
+        if st
+          st.update_attributes(status: "closed") 
+          params = {
+            amount: st.amount,
+            vendor: st.vendor.display_name,
+            account: account,
+            trans_date: st.transaction_date,
+            notes: st.notes,
+            trans_type: "Income"
+          }
+          Transaction.create_new_transaction(params, user_id)
+        end
+      end
+      respond_to do |format|
+        format.html {redirect_to shared_transactions_path}
+        format.json {render json: @jsonArr || "Sorry" }
+      end
+    end
+  end
   
   
   def new

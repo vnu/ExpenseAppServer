@@ -49,8 +49,24 @@ class TransactionsController < ApplicationController
   def destroy
   end
 
+  def overview
+    user_id = get_user
+    if user_id.present?
+      expenses = Transaction.get_total_of("Expense", user_id)
+      incomes = Transaction.get_total_of("Income", user_id)
+      to_pay = SharedTransaction.where("user_id = :uid and owner_id <> :uid", uid: user_id).sum(:amount)
+      to_be_paid = SharedTransaction.where("user_id <> :uid and owner_id = :uid", uid: user_id).sum(:amount)    
+      shared = to_be_paid - to_pay
+    end
+    @overview = {expenses: expenses, incomes: incomes, to_pay: to_pay, to_be_paid: to_be_paid, shared: shared}
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @overview || "Sorry" }
+    end    
+  end
+
   def expenses
-    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    user_id = get_user
     if user_id.present?
      @jsonTransactions = Transaction.getTransactionbyType(user_id, "Expense")
      @jsonArr = {"transactions" => @jsonTransactions}
@@ -62,7 +78,7 @@ class TransactionsController < ApplicationController
   end
 
   def shared
-    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    user_id = get_user
     if user_id.present?
      @jsonTransactions = Transaction.getTransactionbyType(user_id, "Shared")
      @jsonArr = {"transactions" => @jsonTransactions}
@@ -74,7 +90,7 @@ class TransactionsController < ApplicationController
   end
 
   def incomes
-    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    user_id = get_user
     if user_id.present?
      @jsonTransactions = Transaction.getTransactionbyType(user_id, "Income")
      @jsonArr = {"transactions" => @jsonTransactions}
@@ -83,5 +99,9 @@ class TransactionsController < ApplicationController
       format.html {}
       format.json {render json: @jsonArr || "Sorry" }
     end
+  end
+
+  def get_user
+    session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
   end
 end

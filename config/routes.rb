@@ -18,12 +18,15 @@ ExpenseAppServer::Application.routes.draw do
     get :shared, on: :collection
     get :to_pay, on: :collection
     get :to_be_paid, on: :collection
+    post :pay_bill, on: :collection
+    post :confirm_payment, on: :collection
   end
 
   resources :transactions do
     get :expenses, on: :collection
     get :incomes, on: :collection
     get :shared, on: :collection
+    get :overview, on: :collection
   end
   resources :vendors
   resources :users

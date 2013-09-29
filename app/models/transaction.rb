@@ -36,15 +36,16 @@ class Transaction < ActiveRecord::Base
         t.account = account
         t.transaction_date = params[:trans_date].to_date || Date.today
         t.notes = params[:notes]
-        t.transaction_type = t.find_transaction_type(params[:trans_type])
         t.user_id = user_id
         emails = params[:emails]
         t_type = params[:trans_type].titleize
         if emails.present? && (t_type == "Shared" || t_type == "Expense")
+          t_type = "Shared"
           users = find_users(emails)
           users << user_id
           t = create_shared_accounts(users, t, user_id)
         end
+        t.transaction_type = t.find_transaction_type(t_type)
         t.save!
       else
         t = "Your Account doesn't exist. Please Create your Account!"
@@ -84,6 +85,16 @@ class Transaction < ActiveRecord::Base
 
   def find_transaction_type(type)
     TransactionType.find_by(display_name: type.titleize)
+  end
+
+  def self.get_total_of(type, user_id)
+    type_id = TransactionType.find_by(display_name: type.titleize)
+    total = if type == "Income"
+      Transaction.where(transaction_type_id: type_id, user_id: user_id).sum(:amount)
+    else
+      Transaction.where(user_id: user_id).where.not(transaction_type_id: type_id).sum(:amount)
+    end
+    total
   end
 
   def find_account(account, user_id)
