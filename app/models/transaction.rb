@@ -120,6 +120,18 @@ class Transaction < ActiveRecord::Base
     new_trans
   end
 
-
+  def self.getTransactionbyType(user_id, type)
+    tid = TransactionType.find_by(display_name: "Income").try(:id)
+    jsonTransactions = nil
+    if(type == "Income")
+      transactions = Transaction.where(transaction_type_id: tid, user_id: user_id) if tid
+    else
+      transactions = Transaction.where(user_id: user_id).where.not(transaction_type_id: tid) if tid
+    end
+    if transactions.present?
+      jsonTransactions = Transaction.to_jsonFormat(transactions)
+    end
+    jsonTransactions
+  end
 
 end

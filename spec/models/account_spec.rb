@@ -8,6 +8,7 @@
 #  user_id      :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#  initial_bal  :decimal(10, 2)   default(0.0)
 #
 
 require 'spec_helper'

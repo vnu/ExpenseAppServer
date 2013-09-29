@@ -48,4 +48,40 @@ class TransactionsController < ApplicationController
 
   def destroy
   end
+
+  def expenses
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id.present?
+     @jsonTransactions = Transaction.getTransactionbyType(user_id, "Expense")
+     @jsonArr = {"transactions" => @jsonTransactions}
+    end
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @jsonArr || "Sorry" }
+    end
+  end
+
+  def shared
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id.present?
+     @jsonTransactions = Transaction.getTransactionbyType(user_id, "Shared")
+     @jsonArr = {"transactions" => @jsonTransactions}
+    end
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @jsonArr || "Sorry" }
+    end
+  end
+
+  def incomes
+    user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
+    if user_id.present?
+     @jsonTransactions = Transaction.getTransactionbyType(user_id, "Income")
+     @jsonArr = {"transactions" => @jsonTransactions}
+    end
+    respond_to do |format|
+      format.html {}
+      format.json {render json: @jsonArr || "Sorry" }
+    end
+  end
 end
