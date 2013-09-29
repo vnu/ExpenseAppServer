@@ -53,7 +53,7 @@ class Transaction < ActiveRecord::Base
   end
 
   # Add creation of Shared accounts to after save!
-  def create_shared_accounts(users, t)
+  def self.create_shared_accounts(users, t)
     cnt = users.count
     users.each do |u|
       t.shared_transactions.new do |s|
