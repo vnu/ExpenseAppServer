@@ -1,17 +1,19 @@
-%h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
--ts = Transaction.to_jsonFormat(@transactions)
-.row
-  .span3.offset7
-    %h2{style: "color: orange;"} Column
-  .span3
-    %h2{style: "color: orange;"} Value
-
--ts.each do |t|
-  -t.each_pair do |k,v|
-    .row
-      .span3.offset7
-        %h2= k
-      .span3
-        %h2= v
-  %hr
-
+.container
+  .row.offset9{style: "text-align: right;"}
+    %h4
+      =link_to "New Transaction", new_transaction_path
+  %h4{style: "text-align: center; color: purple;"}= "Transactions of #{current_user.name}"
+  .row
+    .span12
+      %table.table.table-bordered.table-striped
+        %tr
+          -Transaction::COLUMNS.each do |col|
+            %th{style: "color: orange; text-align: center;"}= col.titleize
+        -@jsonTransactions.each do |ts|
+          -if ts[:type] == "Income"
+            -t_class = "success"
+          -else
+            -t_class = ts[:type] == "Expense" ? 'error' : 'warning'
+          %tr{class: "#{t_class}"}
+            -Transaction::COLUMNS.each do |col|
+              %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]
