@@ -4,9 +4,11 @@ class CreateSharedTransactions < ActiveRecord::Migration
       t.references :vendor, null: false
       t.references :transaction, null: false
       t.text :notes
-      t.boolean :owner, default: false
+      t.integer :owner_id, references: :users, null: false
+      t.datetime :transaction_date
       t.decimal :amount, precision: 10, scale: 2
       t.references :user, null: false
+      t.string :status, default: 'open'
 
       t.timestamps
     end

@@ -1,0 +1,33 @@
+.container
+  .row.offset9{style: "text-align: right;"}
+    %h4
+      =link_to "New Shared Bill", new_transaction_path
+  %h4{style: "text-align: center; color: purple;"}= "Shared Bill of #{current_user.name}"
+  .row
+    .span12
+      %table.table.table-bordered.table-striped
+        %tr
+          -SharedTransaction::COLUMNS.each do |col|
+            %th{style: "color: orange; text-align: center;"}= col.titleize
+          %th{style: "color: orange; text-align: center;"} Action
+        -@jsonTransactions.each do |ts|
+          %tr{class: "#{ts[:payer] == 'You' ? 'success' : 'error'}"}
+            -SharedTransaction::COLUMNS.each do |col|
+              %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]
+            -if ts[:status] == "open" && ts[:payee] == "You"
+              %td{style: "color: grey; text-align: center;"} 
+                %form{method: :post, action: pay_bill_shared_transactions_path }
+                  %input{name: 'st_id', value: ts[:id], hidden: true}
+                  %button.btn{type: "submit"} Pay
+            -elsif ts[:status] == "progress" && ts[:payee] == "You"
+              %td{style: "color: grey; text-align: center;"} Progress
+            -elsif ts[:status] == "progress" && ts[:payer] == "You"
+              %td
+                %form{method: :post, action: confirm_payment_shared_transactions_path }
+                  %input{name: 'st_id', value: ts[:id], hidden: true}
+                  %input{name: 'account'}
+                  %button.btn{type: "submit"} Confirm
+            -elsif ts[:status] == "closed"
+              %td closed
+            -elsif ts[:status] == "open" && ts[:payer] == "You"
+              %td{style: "color: grey; text-align: center;"} Remind

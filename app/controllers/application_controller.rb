@@ -19,5 +19,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def format_json
+    request.format.json?
+  end
+
   helper_method :current_user
 end
