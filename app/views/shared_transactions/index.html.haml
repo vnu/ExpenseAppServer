@@ -17,17 +17,17 @@
             -case ts[:action]
               - when "pay"
                 %td{style: "color: grey; text-align: center;"}
-                  %form{method: :post, action: pay_bill_shared_transactions_path }
+                  %form.input-append{method: :post, action: pay_bill_shared_transactions_path }
                     %input{name: 'st_id', value: ts[:id], hidden: true}
-                    %button.btn{type: "submit"} Pay
+                    %button.span2.btn.btn-danger{type: "submit"} Pay
               - when "progress"
                 %td{style: "color: grey; text-align: center;"} Progress
               - when "confirm"
                 %td
-                  %form{method: :post, action: confirm_payment_shared_transactions_path }
-                    %input{name: 'st_id', value: ts[:id], hidden: true}
-                    %input{name: 'account', placeholder: 'Enter account'}
-                    %button.btn{type: "submit"} Confirm
+                  %form.input-append{method: :post, action: confirm_payment_shared_transactions_path }
+                    %input{name: 'st_id', value: ts[:id], hidden: true, style: "display: none;"}
+                    %input.span2{name: 'account', placeholder: 'Enter account', style: "height: 20px;"}
+                    %button.btn.btn-warning{type: "submit", style: "height: 25px; "} Confirm
               - when "closed"
                 %td{style: "color: grey; text-align: center;"} closed
               - when "remind"
