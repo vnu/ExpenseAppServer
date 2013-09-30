@@ -14,20 +14,21 @@
           %tr{class: "#{ts[:payer] == 'You' ? 'success' : 'error'}"}
             -SharedTransaction::COLUMNS.each do |col|
               %td{style: "color: grey; text-align: center;"}= ts[col.to_sym]
-            -if ts[:status] == "open" && ts[:payee] == "You"
-              %td{style: "color: grey; text-align: center;"} 
-                %form{method: :post, action: pay_bill_shared_transactions_path }
-                  %input{name: 'st_id', value: ts[:id], hidden: true}
-                  %button.btn{type: "submit"} Pay
-            -elsif ts[:status] == "progress" && ts[:payee] == "You"
-              %td{style: "color: grey; text-align: center;"} Progress
-            -elsif ts[:status] == "progress" && ts[:payer] == "You"
-              %td
-                %form{method: :post, action: confirm_payment_shared_transactions_path }
-                  %input{name: 'st_id', value: ts[:id], hidden: true}
-                  %input{name: 'account'}
-                  %button.btn{type: "submit"} Confirm
-            -elsif ts[:status] == "closed"
-              %td closed
-            -elsif ts[:status] == "open" && ts[:payer] == "You"
-              %td{style: "color: grey; text-align: center;"} Remind
+            -case ts[:action]
+              - when "pay"
+                %td{style: "color: grey; text-align: center;"}
+                  %form{method: :post, action: pay_bill_shared_transactions_path }
+                    %input{name: 'st_id', value: ts[:id], hidden: true}
+                    %button.btn{type: "submit"} Pay
+              - when "progress"
+                %td{style: "color: grey; text-align: center;"} Progress
+              - when "confirm"
+                %td
+                  %form{method: :post, action: confirm_payment_shared_transactions_path }
+                    %input{name: 'st_id', value: ts[:id], hidden: true}
+                    %input{name: 'account', placeholder: 'Enter account'}
+                    %button.btn{type: "submit"} Confirm
+              - when "closed"
+                %td{style: "color: grey; text-align: center;"} closed
+              - when "remind"
+                %td{style: "color: grey; text-align: center;"} Remind
