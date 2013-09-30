@@ -54,11 +54,27 @@ class SharedTransaction < ActiveRecord::Base
             status: t.status,
             notes: t.notes,
             trans_date: t.transaction_date,
-            expense: exp
+            expense: exp,
+            action: t.get_action_status(t.status, payer, payee)
           }
         new_trans << json_t
       end
     end
     new_trans
   end
+
+  def get_action_status(status, payer, payee)
+    if status == "open" && payee == "You"
+      "pay"
+    elsif status == "progress" && payee == "You"
+      "progress"
+    elsif status == "progress" && payer == "You"
+      "confirm"
+    elsif status == "open" && payer == "You"
+      "remind"
+    elsif status == "closed"
+      "closed"
+    end
+  end
+
 end
