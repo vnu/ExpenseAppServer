@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
   def index
     user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
     if user_id
-      @transactions = Transaction.where(user_id: user_id)
+      @transactions = Transaction.where(user_id: user_id).order("transaction_date")
       @jsonTransactions = Transaction.to_jsonFormat(@transactions)
       @jsonArr = {"transactions" => @jsonTransactions}
     end

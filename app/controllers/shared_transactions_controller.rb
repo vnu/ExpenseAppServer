@@ -6,7 +6,7 @@ class SharedTransactionsController < ApplicationController
   def index
     user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
     if user_id
-      @transactions = SharedTransaction.where("user_id = ? OR owner_id = ?",user_id, user_id)
+      @transactions = SharedTransaction.where("user_id = ? OR owner_id = ?",user_id, user_id).order("transaction_date desc")
       @jsonTransactions = SharedTransaction.to_jsonFormat(@transactions, user_id)
       respond_to do |format|
         format.html {}
@@ -18,7 +18,7 @@ class SharedTransactionsController < ApplicationController
   def to_pay
     user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
     if user_id.present?
-     @transactions = SharedTransaction.where("user_id = :uid and owner_id <> :uid", uid: user_id)
+     @transactions = SharedTransaction.where("user_id = :uid and owner_id <> :uid", uid: user_id).order("transaction_date desc")
      @jsonTransactions = SharedTransaction.to_jsonFormat(@transactions, user_id)
      @jsonArr = {"transactions" => @jsonTransactions}
     end
@@ -31,7 +31,7 @@ class SharedTransactionsController < ApplicationController
   def to_be_paid
     user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
     if user_id.present?
-     @transactions = SharedTransaction.where("user_id <> :uid and owner_id = :uid", uid: user_id)
+     @transactions = SharedTransaction.where("user_id <> :uid and owner_id = :uid", uid: user_id).order("transaction_date desc")
      @jsonTransactions = SharedTransaction.to_jsonFormat(@transactions, user_id)
      @jsonArr = {"transactions" => @jsonTransactions}
     end
@@ -44,7 +44,7 @@ class SharedTransactionsController < ApplicationController
   def shared
     user_id = session[:user_id] || User.find_by(twitter_user_name: params[:username]).try(:id)
     if user_id.present?
-     @transactions = SharedTransaction.where("user_id = :uid or owner_id =:uid",uid: user_id)
+     @transactions = SharedTransaction.where("user_id = :uid or owner_id =:uid",uid: user_id).order("transaction_date desc")
      @jsonTransactions = SharedTransaction.to_jsonFormat(@transactions, user_id)
      @jsonArr = {"transactions" => @jsonTransactions}
     end

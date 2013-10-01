@@ -136,9 +136,9 @@ class Transaction < ActiveRecord::Base
     tid = TransactionType.find_by(display_name: "Income").try(:id)
     jsonTransactions = nil
     if(type == "Income")
-      transactions = Transaction.where(transaction_type_id: tid, user_id: user_id) if tid
+      transactions = Transaction.where(transaction_type_id: tid, user_id: user_id).order("transaction_date desc") if tid
     else
-      transactions = Transaction.where(user_id: user_id).where.not(transaction_type_id: tid) if tid
+      transactions = Transaction.where(user_id: user_id).where.not(transaction_type_id: tid).order("transaction_date desc") if tid if tid
     end
     if transactions.present?
       jsonTransactions = Transaction.to_jsonFormat(transactions)
