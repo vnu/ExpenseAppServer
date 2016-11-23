@@ -3,8 +3,7 @@ development:
   encoding: unicode
   database: expenseApp_development
   pool: 5
-  username: expenseApp
-  password: expenseApp
+  username: expense_app
   host: localhost
 
 test:
@@ -12,8 +11,7 @@ test:
   encoding: unicode
   database: expenseApp_test
   pool: 5
-  username: expenseApp
-  password: expenseApp
+  username: expense_app
   host: localhost
 
 production:

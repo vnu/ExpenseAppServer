@@ -6,9 +6,6 @@ gem 'rails', '4.0.0'
 # Use postgres as the database for Active Record
 gem "pg", "~> 0.17.0"
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
-
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -42,12 +39,19 @@ group :doc do
   gem 'sdoc'
 end
 
-group :development do
+group :development, :test do
   gem "watchr"
+  gem "rspec-rails"
+  gem "fabrication", "~> 2.8.1"
+  gem "capybara", "~> 2.1.0" #updated on Mar 28,2013 for Integration tests
+  gem "poltergeist"
+end
+
+group :development do
   gem "annotate", "~> 2.5.0" # For Populating model Comments
   gem "better_errors", "~> 1.0.1"
   gem "binding_of_caller", "~> 0.7.2"
-  gem "localtunnel", "~> 0.3"
+  # gem "localtunnel", "~> 0.3"
   gem "railroady", "~> 1.1.1"
   gem "meta_request", "~> 0.2.8"
   gem "rails-footnotes", "~> 3.7.9"
@@ -55,10 +59,7 @@ group :development do
   gem "jazz_hands", "~> 0.5.1"
   gem "pry-rescue", "~> 1.1.1"
 
-  gem "migrate-well"                     # rake db:migrate:well will run annotate automatically afterwards.
-  gem "rspec-rails"
-  gem "fabrication", "~> 2.8.1"
-  gem "capybara", "~> 2.1.0" #updated on Mar 28,2013 for Integration tests
+  gem "migrate-well"
 
   gem 'rb-fsevent' #if RUBY_PLATFORM.downcase.include?("darwin") # has to be commented else deploy to Heroku fails
   gem 'growl' #if RUBY_PLATFORM.downcase.include?("darwin")
@@ -70,22 +71,14 @@ group :development do
   gem 'foreman'
   gem "webrat"
   gem "quiet_assets"
-  gem "poltergeist"
 end
 
 group :test do
   gem 'test-unit'
-  gem "watchr"
-  gem "rspec-rails"
   gem "valid_attribute"
-  gem "fabrication", "~> 2.8.1"
-  gem "capybara", "~> 2.1.0" #updated on Mar 28,2013 for Integration tests
+  
   gem "webmock"
   gem "spork"
-  gem "autotest"
-  gem "autotest-rails-pure"
-  gem "autotest-growl"
-  #gem "autotest-fsevent"
   gem "shoulda"
   gem "fuubar"
   gem "launchy"
@@ -100,7 +93,6 @@ group :test do
   # gem "capybara-webkit"
   gem 'resque_spec'
   gem "selenium-webdriver", ">= 2.34.0"
-  gem "poltergeist"
 end
 
 # Use ActiveModel has_secure_password

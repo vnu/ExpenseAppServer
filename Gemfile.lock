@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    ZenTest (4.9.4)
     actionmailer (4.0.0)
       actionpack (= 4.0.0)
       mail (~> 2.5.3)
@@ -31,10 +30,6 @@ GEM
       rake
     arel (4.0.0)
     atomic (1.1.14)
-    autotest (4.4.6)
-      ZenTest (>= 4.4.1)
-    autotest-growl (0.2.16)
-    autotest-rails-pure (4.1.2)
     awesome_print (1.1.0)
     better_errors (1.0.1)
       coderay (>= 1.0.0)
@@ -160,10 +155,6 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
-    localtunnel (0.3)
-      json (>= 1.2.4)
-      net-ssh (>= 2.0.22)
-      net-ssh-gateway (>= 1.0.1)
     lumberjack (1.0.4)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -400,9 +391,6 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (~> 2.5.0)
-  autotest
-  autotest-growl
-  autotest-rails-pure
   better_errors (~> 1.0.1)
   binding_of_caller (~> 0.7.2)
   bootstrap-sass (~> 2.3.2.2)
@@ -426,7 +414,6 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   launchy
-  localtunnel (~> 0.3)
   meta_request (~> 0.2.8)
   migrate-well
   no_peeping_toms
@@ -462,3 +449,6 @@ DEPENDENCIES
   webmock
   webrat
   zeus (~> 0.13.3)
+
+BUNDLED WITH
+   1.13.6
